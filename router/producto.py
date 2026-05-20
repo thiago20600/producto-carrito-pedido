@@ -44,7 +44,10 @@ async def patch_product(session: SessionDep, product_id: int, product: ProductUp
         setattr(product_db, key, value)
     
     product_db.updated_at = datetime.now(timezone.utc)
-    
+
+    session.add(product_db)
+    session.refresh(product_db)
+   
     return product_db
 
 

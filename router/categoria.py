@@ -57,4 +57,8 @@ async def patch_categoria(session: SessionDep, categoria: CategoriaUpdate, categ
     
     categoria_db.updated_at = datetime.now(timezone.utc)
 
+    session.add(categoria_db)
+    session.refresh(categoria_db)
+
+
     return categoria_db
