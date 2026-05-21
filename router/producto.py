@@ -26,7 +26,7 @@ async def post_product(session: SessionDep,product: ProductCreate, current_user 
     db_product = Producto.model_validate(product)
     db_product.user_email = current_user['email']
     session.add(db_product)
-    session.flush()
+    session.refresh(db_product)
 
     return db_product
 

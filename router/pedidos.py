@@ -31,12 +31,17 @@ async def patch_pedido(session: SessionDep, pedido_id:int, pedido_update:PedidoU
     pedido_db = session.get(Pedido, pedido_id)
     
     if not pedido_db:
-        raise HTTPException(status_code=404, detail='Producto no encontrado')
+        raise HTTPException(status_code=404, detail='Pedido no encontrado')
     
-    
+    estado_anterior = pedido_db.estado
+
+    if estado_anterior == EstadoPedido.entregado or estado_anterior == EstadoPedido.cancelado:
+        raise HTTPException(status_code=400, detail='No se puede modificar un pedido entregado o cancelado')
+
     pedido_data = pedido_update.model_dump(exclude_unset=True)
     for key, value in pedido_data.items():
         setattr(pedido_db, key, value)
+    
     
     pedido_db.updated_at = datetime.now(timezone.utc)
 

@@ -13,3 +13,5 @@ class PedidoProductoLink(SQLModel, table=True):
     cantidad: int = Field(default=1)
 
     precio_unitario: float
+
+

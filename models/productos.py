@@ -1,7 +1,8 @@
 from sqlmodel import Field, Relationship,SQLModel
-from models.categorias import CategoriaPublic
+from models.categorias import Categoria, CategoriaPublic
 from models.links import PedidoProductoLink, ProductosCategoriaLink
 from datetime import date, datetime, timezone
+
 
 class Producto(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -14,7 +15,8 @@ class Producto(SQLModel, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime | None = Field(default=None)
     user_email: str
-    pedidos: list["Pedido"] = Relationship(back_populates="productos", link_model=PedidoProductoLink)
+    pedidos: list['Pedido'] = Relationship(back_populates="productos", link_model=PedidoProductoLink)
+    items: list['CarritoItem'] = Relationship(back_populates="producto")
 
 
 class ProductoPublic(SQLModel):
@@ -32,7 +34,7 @@ class ProductCreate(SQLModel):
     precio: float
     stock: int
     descripcion: str | None
-    user_email: str
+
 
 
 class ProductUpdate(SQLModel):
